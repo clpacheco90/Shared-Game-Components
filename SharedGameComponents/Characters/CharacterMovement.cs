@@ -25,7 +25,7 @@ namespace SGC.Characters {
         
         public static bool IsMovingHorizontal(out float h, bool abs = false) {
             h = Input.GetAxisRaw("Horizontal");
-            return (abs) ? (Mathf.Abs(h) > 0.1f) : h != 0f;
+            return (abs) ? (Mathf.Abs(h) != 0f) : h != 0f;
         }
         
         //-----------------------------------------------------------------------------------------------------------------------------//	
@@ -39,7 +39,8 @@ namespace SGC.Characters {
         
         public static bool IsMovingVertical(out float v, bool abs = false) {
             v = Input.GetAxisRaw("Vertical");
-            return (abs) ? (Mathf.Abs(v) > 0.1f) : v != 0f;
+            return (abs) ? (Mathf.Abs(v) != 0f) : v != 0f;
+            //return (abs) ? (Mathf.Abs(v) > 0.1f) : v != 0f;
         }
         
         //-----------------------------------------------------------------------------------------------------------------------------//	
@@ -100,6 +101,39 @@ namespace SGC.Characters {
                 targetSpeed *= jump.jumpSpeed;
                 movement.hangTime += Time.smoothDeltaTime;
             }
+            movement.speed = Mathf.Lerp(movement.speed, targetSpeed, curSmooth);
+        }
+
+        //-----------------------------------------------------------------------------------------------------------------------------//	
+
+        public static void UpdateSmoothedMovementFreeDirection(ref ControllerMovement movement, CharacterController controller, bool canControl = false) {
+            float h = 0.0f;
+            float v = 0.0f;
+
+            if (!canControl) {
+                v = 0.0f;
+                h = 0.0f;
+                return;
+            }
+
+            //movement.isMoving = IsMovingHorizontal(out h, true) || IsMovingVertical(out v, true);
+            //if (movement.isMoving) movement.direction = new Vector3(h, v, movement.direction.z);
+
+            if ((IsMovingHorizontal(out h, true))&&(IsMovingVertical(out v, true)))
+                movement.direction = new Vector3(h, v, movement.direction.z);
+            if (IsMovingHorizontal(out h, true))
+                movement.direction = new Vector3(h, movement.direction.y, movement.direction.z);
+            else if (IsMovingVertical(out v, true))
+                movement.direction = new Vector3(movement.direction.x, v, movement.direction.z);
+
+            var curSmooth = 0.0f; // Smooth the speed based on the current target direction
+            var tsMin = (h != 0.0f) ? h : v;
+            var targetSpeed = Mathf.Min(Mathf.Abs(tsMin), 1.0f); // Choose target speed
+
+            curSmooth = movement.speedSmoothing * Time.smoothDeltaTime;
+            targetSpeed *= movement.runSpeed;
+            movement.hangTime = 0.0f;
+       
             movement.speed = Mathf.Lerp(movement.speed, targetSpeed, curSmooth);
         }
         
