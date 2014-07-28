@@ -42,7 +42,7 @@ namespace SGC.Characters {
         private void UpdateMovement() {
             movement.transform.position = new Vector3(movement.transform.position.x, movement.transform.position.y, movement.transform.position.z);
             CharacterMovement.UpdateSmoothedMovementFreeDirection(ref movement, controller, canControl);
-            Debug.Log(movement.direction);
+            
             var lastPosition = transform.position; // Save lastPosition for velocity calculation.
             var currentMovementOffset = (movement.direction * movement.speed);  // Calculate actual motion
             currentMovementOffset *= Time.smoothDeltaTime; // We always want the movement to be framerate independent.  Multiplying by Time.smoothDeltaTime does this.

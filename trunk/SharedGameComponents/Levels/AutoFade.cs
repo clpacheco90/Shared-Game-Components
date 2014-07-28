@@ -1,7 +1,7 @@
 using UnityEngine;
 using System.Collections;
 
-namespace Levels {
+namespace SGC.Levels {
     public class AutoFade : MonoBehaviour {
         
         //-----------------------------------------------------------------------------------------------------------------------------//		
