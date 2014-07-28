@@ -62,10 +62,12 @@
     <Compile Include="Camera\CameraMoveAt.cs" />
     <Compile Include="Camera\CameraPivot.cs" />
     <Compile Include="Camera\LayerParallax.cs" />
+    <Compile Include="Math\Math.cs" />
     <Compile Include="Characters\Character.cs" />
     <Compile Include="Characters\CharacterMovement.cs" />
     <Compile Include="Characters\ControllerJumping.cs" />
     <Compile Include="Characters\ControllerMovement.cs" />
+    <Compile Include="Characters\PlayerFreeMovement.cs" />
     <Compile Include="Characters\PlayerSideScrolling.cs" />
     <Compile Include="Levels\AutoFade.cs" />
     <Compile Include="Levels\LoadLevel.cs" />
@@ -115,7 +117,7 @@
   <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>
-    <PostBuildEvent>copy /y "C:\Users\kenta\Documents\Visual Studio 2010\Projects\SharedGameComponents\SharedGameComponents\bin\Release\SharedGameComponents.dll" "C:\Users\kenta\Documents\TestFrameWork\Assets\SharedGameComponents.dll"</PostBuildEvent>
+    <PostBuildEvent>copy /y "C:\Users\kenta\Subversion\SharedGameComponents\SharedGameComponents\bin\Release\SharedGameComponents.dll" "C:\Users\kenta\Desktop\UnderRiders\UnderRiders\Assets\Plugins\SharedGameComponents.dll"</PostBuildEvent>
   </PropertyGroup>
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
