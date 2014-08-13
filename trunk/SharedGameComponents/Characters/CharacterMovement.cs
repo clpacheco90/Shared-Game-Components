@@ -42,6 +42,12 @@ namespace SGC.Characters {
             return (abs) ? (Mathf.Abs(v) != 0f) : v != 0f;
             //return (abs) ? (Mathf.Abs(v) > 0.1f) : v != 0f;
         }
+
+        public static bool IsMoving(out float h, out float v) {
+            h = Input.GetAxisRaw("Horizontal");
+            v = Input.GetAxisRaw("Vertical");            
+            return (h != 0) || (v != 0) ? true : false;
+        }
         
         //-----------------------------------------------------------------------------------------------------------------------------//	
         

@@ -47,17 +47,16 @@ namespace SGC.Characters {
             CharacterMovement.ApplyGravity(ref movement, ref jump, controller, canControl);
             CharacterMovement.ApplyJumping(ref movement, ref jump, controller, canControl);
 
-            var lastPosition = transform.position; // Save lastPosition for velocity calculation.
+            var lastPosition          = transform.position; // Save lastPosition for velocity calculation.
             var currentMovementOffset = (movement.direction * movement.speed) + (new Vector3(0.0f, movement.verticalSpeed, 0.0f));  // Calculate actual motion
-            currentMovementOffset *= Time.smoothDeltaTime; // We always want the movement to be framerate independent.  Multiplying by Time.smoothDeltaTime does this.
-            movement.slideX = 0.0f;
-            movement.collisionFlags = controller.Move(currentMovementOffset);
-            movement.velocity = (transform.position - lastPosition) / Time.smoothDeltaTime;
+            currentMovementOffset    *= Time.smoothDeltaTime; // We always want the movement to be framerate independent.  Multiplying by Time.smoothDeltaTime does this.
+            movement.collisionFlags   = controller.Move(currentMovementOffset);
+            movement.velocity         = (transform.position - lastPosition) / Time.smoothDeltaTime;
         }
 
 		//-----------------------------------------------------------------------------------------------------------------------------//		
 
-        public void DefaultSettings() {
+        public virtual void DefaultSettings() {
             if (!controller.isGrounded) return;
             jump.extraHeight = extraHeightAux;
             //movement.gravity = gravityAux;
