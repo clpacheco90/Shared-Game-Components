@@ -13,19 +13,14 @@ namespace SGC.Characters {
 		//-----------------------------------------------------------------------------------------------------------------------------//	
 
 		private CharacterController controller;
-        private float extraHeightAux;
+        private float countSlideMovement;
 	   
 		//-----------------------------------------------------------------------------------------------------------------------------//	
 			   
 		public override void Awake() {
 			this.movement.direction = this.transform.TransformDirection(Vector3.right);
 			this.controller         = this.GetComponent<CharacterController>();
-			this.movement.transform = this.gameObject.transform;
-
-            //! Change for methods in CharController
-		   /* if (canControl) {
-				Camera.main.gameObject.GetComponent<CameraMoveAt>()._gameObj = this.transform; 
-			}*/
+			this.movement.transform = this.gameObject.transform;            
 			base.Awake();
 		}
 		
@@ -42,19 +37,36 @@ namespace SGC.Characters {
         private void UpdateMovement() {
             movement.transform.position = new Vector3(movement.transform.position.x, movement.transform.position.y, movement.transform.position.z);
             CharacterMovement.UpdateSmoothedMovementFreeDirection(ref movement, controller, canControl);
-            
-            var lastPosition = transform.position; // Save lastPosition for velocity calculation.
+   
+            var lastPosition          = transform.position; // Save lastPosition for velocity calculation.
             var currentMovementOffset = (movement.direction * movement.speed);  // Calculate actual motion
-            currentMovementOffset *= Time.smoothDeltaTime; // We always want the movement to be framerate independent.  Multiplying by Time.smoothDeltaTime does this.
-            movement.slideX = 0.0f;
-            movement.collisionFlags = controller.Move(currentMovementOffset);
-            movement.velocity = (transform.position - lastPosition) / Time.smoothDeltaTime;
+            currentMovementOffset    *= Time.smoothDeltaTime; // We always want the movement to be framerate independent.  Multiplying by Time.smoothDeltaTime does this.
+            movement.collisionFlags   = controller.Move(currentMovementOffset);
+            movement.velocity         = (transform.position - lastPosition) / Time.smoothDeltaTime;
         }
 
 		//-----------------------------------------------------------------------------------------------------------------------------//		
 
-        public void DefaultSettings() {            
-            movement.direction = Vector3.zero;
+        public virtual void DefaultSettings() {
+            if (!movement.canSlideMovement) {
+                movement.direction = Vector3.zero;
+            } else {
+                if (canControl) {
+                    float h, v;
+                    if (CharacterMovement.IsMoving(out h, out v)) {
+                        movement.direction.x = (h != movement.direction.x) ? h : movement.direction.x;
+                        movement.direction.y = (v != movement.direction.y) ? v : movement.direction.y;
+                    } //if
+                    countSlideMovement += Time.deltaTime;
+                    if (countSlideMovement >= movement.slideMovementTimer) {
+                        movement.direction = Vector3.zero;
+                        countSlideMovement = 0;
+                    }
+                } else {
+                    movement.direction = Vector3.zero;
+
+                }
+            } //if            
         }
 
         //-----------------------------------------------------------------------------------------------------------------------------//

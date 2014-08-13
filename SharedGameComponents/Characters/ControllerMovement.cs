@@ -8,12 +8,14 @@ namespace SGC.Characters {
         
         public bool enabled      = true;// Can the character jump?
         public float runSpeed    = 7.0f;// The speed when running 	
-        public float slideFactor = 0.05f;// The speed when sliding up and around corners 
+        //public float slideFactor = 0.05f;// The speed when sliding up and around corners 
         [System.NonSerializedAttribute]
         public float slideX         = 0.0f;
         public float gravity        = 60.0f;// The gravity for the character
         public float maxFallSpeed   = 20.0f;
         public float speedSmoothing = 20.0f; // How fast does the character change speeds?  Higher is faster.
+        public bool canSlideMovement; // This will keep the movement for some time after release the button
+        public float slideMovementTimer = 0.0f; // timer after the button is released
         public bool canRotation;// This enables the rotation 
         public float rotationSmoothing = 10.0f;// This controls how fast the graphics of the character "turn around" when the player turns around using the controls.		
         [System.NonSerializedAttribute]
